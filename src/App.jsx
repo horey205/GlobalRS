@@ -237,8 +237,17 @@ export default function App() {
   const currentTemp = (rawMean * 0.00341802) + 149.0 - 273.15;
 
   const getPointInterpretation = (val) => {
-    if (viewMode === 'ndvi') return val > 0.4 ? "밀집 식생" : (val > 0.1 ? "경작지/초지" : "비식생");
-    if (viewMode === 'nbr') return val < -0.1 ? "화재 피해" : "정상 지형";
+    if (viewMode === 'ndvi') {
+      if (val > 0.6) return "울창한 산림";
+      if (val > 0.3) return "일반 식생";
+      if (val > 0.1) return "경작지/초지";
+      return "비식생/도심";
+    }
+    if (viewMode === 'nbr') {
+      if (val < -0.1) return "심각한 화재 피해";
+      if (val < 0.1) return "건조 지대/화재 영향";
+      return "정상/건강한 식생";
+    }
     if (viewMode === 'lst') return `${val.toFixed(1)}°C`;
     return "";
   };
